@@ -27,9 +27,9 @@ namespace Multiplication
             int month = int.Parse(comboBox1.Text);
 
             // 月の１日が何曜日かを管理（日曜日：0 ～ 土曜日：6）
-            int week = 6;
+            int week = CalendarLibrary.Functions.MakeWeek(year, month);
             // 月の末日の日付を管理（28、29、30、31）
-            int last = 31;
+            int last = CalendarLibrary.Functions.MakeLast(year, month);
             for (int i = 0; i < week; i++)
             {
                 links[i].Text = "-";
@@ -50,8 +50,6 @@ namespace Multiplication
                 links[i].Links[0].Enabled = false;
             }
         }
-
-
 
         private void Form3_Load(object sender, EventArgs e)
         {
