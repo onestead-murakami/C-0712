@@ -19,6 +19,16 @@ namespace Multiplication
             InitializeComponent();
         }
 
+        private void MakeCalender()
+        {
+            if (comboBox1.SelectedIndex < 0)
+                return;
+            int year = (int)numericUpDown1.Value;
+            int month = int.Parse(comboBox1.Text);
+        }
+
+
+
         private void Form3_Load(object sender, EventArgs e)
         {
             //1行目
@@ -72,8 +82,20 @@ namespace Multiplication
             //初期化
             for (int i = 0; i < links.Count; i++)
             {
-                links[i].Text = i.ToString();
+                links[i].Text = "-";
             }
+            numericUpDown1.Value = DateTime.Now.Year;
+            comboBox1.Text = DateTime.Now.Month.ToString();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            MakeCalender();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MakeCalender();
         }
     }
 }
