@@ -1,83 +1,54 @@
+using System;
+using System.Windows.Forms;
 
-using Newtonsoft.Json;
-using System.Net.Http.Json;
-using System.Net.Http.Headers;
-using System.Net;
-using System.Text;
-
-class Program
+namespace Multiplication
 {
-    #nullable disable warnings
-    private static async Task Main(string[] args)
+    public partial class Form1 : Form
     {
-        //HTTPクライアント作成
-        var http = new HttpClient();
-        HttpResponseMessage mess = null;
-
-        var basicAuth = Convert.ToBase64String(Encoding.ASCII.GetBytes("user:password"));
-        var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:3000/api/secret");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
-
-        //GETリクエスト
-        mess = await http.SendAsync(request);
-        HttpStatusCode status = mess.StatusCode;
-        if (status != HttpStatusCode.OK)
+        public Form1()
         {
-            Console.WriteLine("＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝データ取得失敗");
-            Console.ReadLine();
-            return;
+            InitializeComponent();
         }
-        else
+
+        private void Form1_Load(object sender, EventArgs e)
         {
-            //初回表示を作成
-            mess = await http.GetAsync("http://localhost:3000/api/read");
-            var json = await mess.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<ApiResult>(json);
+            //↓↓↓設定ファイルで定義することで、プログラムから切り離せる
+            //行最大値
+            const int MAX_ROW = 20;
+            //列最大値
+            const int MAX_COL = 9;
+            //桁数
+            const int DIGITS = 3;
+            //↑↑↑設定ファイルで定義することで、プログラムから切り離せる
 
-            Console.WriteLine("＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝メッセージ表示");
-            
-            //Console.WriteLine("＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝(" + data.UserName + ")");
-
-            foreach (var line in data.Contents)
-                Console.WriteLine(line);
-            Console.WriteLine();
-
-            while (true)
+            //行反復
+            for (int row = 1; row <= MAX_ROW; row++)
             {
-                //エンター押下（無限ループ中の標準入力）を作成
-                Console.Write("メッセージ送信（「quit」入力で終了）：");
-                var input = Console.ReadLine();
-                if (input == "quit")
+                //列反復
+                for (int col = 1; col <= MAX_COL; col++)
                 {
-                    break;
+                    //九九の計算結果を記憶
+                    int value = row * col;
+                    //計算結果を表示
+                    textBox1.Text += $"{value, DIGITS} "; //古いバージョンの書き方は「　string.Format("{0, 2} ", value)　」
+
+                    /*
+                    //計算結果が1桁以下の時は前にスペースを入れて桁合わせする
+                    if (value <= 9)
+                    {
+                        //前にスペースを表示
+                        textBox1.Text += " ";
+                    }
+                    //計算結果を表示
+                    textBox1.Text += value;
+                    //後にスペースを表示
+                    textBox1.Text += " ";
+                    */
+
                 }
-                else
-                {
-                    var param = new ApiPraram();
-                    param.Message = input;
-                    mess = await http.PostAsJsonAsync("http://localhost:3000/api/update", param);
-                    json = await mess.Content.ReadAsStringAsync();
-                    data = JsonConvert.DeserializeObject<ApiResult>(json);
-                    Console.WriteLine("＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝メッセージ表示");
-                    
-                    //Console.WriteLine("＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝(" + data.UserName + ")");
-                    
-                    foreach (var line in data.Contents)
-                        Console.WriteLine(line);
-                    Console.WriteLine();
-                }
+                //一行ごとに改行を表示
+                textBox1.Text += "\r\n";
             }
         }
-        http.Dispose();
     }
-    #nullable restore warnings
-}
-
-class ApiPraram {
-    public string Message { get; set; } = "";
-}
-
-class ApiResult {
-    public bool Result { get; set; } = false;
-    public List<string> Contents { get; set; } = new List<string>();
 }
