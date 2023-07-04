@@ -119,5 +119,11 @@ namespace Multiplication
         {
             MakeCalender();
         }
+
+        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MessageBox.Show(e.Link.Description);//ここで表示
+        }
+
     }
 }
