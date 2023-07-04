@@ -5,6 +5,34 @@ using System.Windows.Forms;
 
 namespace Multiplication
 {
+    abstract class Class1
+    {
+        public string id = "";
+        public string password = "";
+        public abstract string GetData();
+        /*
+        public virtual string GetData()
+        {
+            return id;
+        }
+        */
+    }
+    class Class2 : Class1
+    {
+        public string name = "";
+        public override string GetData()
+        {
+            return name;
+        }
+    }
+    class Class3 : Class1
+    {
+        public string email = "";
+        public override string GetData()
+        {
+            return email;
+        }
+    }
     static class Program
     {
         /// <summary>
