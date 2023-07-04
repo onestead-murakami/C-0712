@@ -25,6 +25,30 @@ namespace Multiplication
                 return;
             int year = (int)numericUpDown1.Value;
             int month = int.Parse(comboBox1.Text);
+
+            // 月の１日が何曜日かを管理（日曜日：0 ～ 土曜日：6）
+            int week = 6;
+            // 月の末日の日付を管理（28、29、30、31）
+            int last = 31;
+            for (int i = 0; i < week; i++)
+            {
+                links[i].Text = "-";
+                links[i].Links[0].Enabled = false;
+            }
+            //当月の表示処理
+            int day = 1;
+            for (int i = week; day <= last; i++, day++)
+            {
+                links[i].Text = day.ToString();
+                links[i].Links[0].Enabled = true;
+                links[i].Links[0].Description = numericUpDown1.Value + "-" + comboBox1.Text.PadLeft(2, '0') + "-" + links[i].Text;
+            }
+            //当月分よりも後の表示処理
+            for (int i = (week + last); i < links.Count; i++)
+            {
+                links[i].Text = "-";
+                links[i].Links[0].Enabled = false;
+            }
         }
 
 
