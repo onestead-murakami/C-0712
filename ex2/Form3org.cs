@@ -41,7 +41,7 @@ namespace Multiplication
             {
                 links[i].Text = day.ToString();
                 links[i].Links[0].Enabled = true;
-                links[i].Links[0].Description = numericUpDown1.Value + "-" + comboBox1.Text.PadLeft(2, '0') + "-" + labels[i].Text;
+                links[i].Links[0].Description = numericUpDown1.Value + "-" + comboBox1.Text.PadLeft(2, '0') + "-" + links[i].Text;
             }
             //当月分よりも後の表示処理
             for (int i = (week + last); i < links.Count; i++)
